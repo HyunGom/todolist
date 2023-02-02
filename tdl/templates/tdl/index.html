@@ -6,22 +6,28 @@
 
 <p>Today date is {{today}} </p>
 
-<form action="#" method="POST" class="form">
+<form action="" method="POST" class="form">
     {% csrf_token %}
     <div class="form__field">
-        <input class="input input--text" id="task" type="text" name="task" placeholder="Task Title Here" />
+        <input class="input input--text" id="title" type="text" name="title" placeholder="Task Title Here" />
     </div>
     <button type="submit" class="btn btn--lg">ADD</button>
 </form>
 
 <div class="layout tasks">
+    {% for task in tasks %}
     <div class="column column--2of3">
-        <h4>make this template dynamic</h4>
+        {% if task.complete%}
+        <h4><s>{{task.title|title}}</s></h4>
+        {% else %}
+        <h4>{{task.title|title}}</h4>
+        {% endif %}
     </div>
     <div class="column column--1of3">
-        <button class="btn btn--main">Complete</button>
-        <button class="btn btn--sub--outline">Delete</button>
+        <button class="btn btn--main"><a class="complete" href="{% url 'complete' task.id %}">Complete</a></button>
+        <button class="btn btn--sub--outline"><a class="delete" href="{% url 'delete' task.id %}">Delete</a></button>
     </div>
+    {% endfor %}
 </div>
 
 {% endblock %}
